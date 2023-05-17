@@ -20,6 +20,6 @@ created: 04/27/23 <br>
 - **codes:** <br>
     (1) *one_LV:* steady-state analysis with one temperate phage host pair <br>
     (2) *two_LV:* invasion and steady-state analysis for two pairs <br>
-    (3) *spatial_model:* (currently not being tracked by github) two pairs model spatially extended by adding diffusion of viruses and lysogens <br>
+    (3) *spatial_model:* two pairs model spatially extended by adding diffusion of viruses and lysogens <br>
     
 

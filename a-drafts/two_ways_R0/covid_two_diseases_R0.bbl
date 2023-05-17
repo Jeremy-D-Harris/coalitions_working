@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{diekmann2010construction}
+Odo Diekmann, JAP Heesterbeek, and Michael~G Roberts.
+\newblock The construction of next-generation matrices for compartmental
+  epidemic models.
+\newblock {\em Journal of the Royal Society Interface}, 7(47):873--885, 2010.
+
+\bibitem{liu2020viral}
+Yang Liu, Li-Meng Yan, Lagen Wan, Tian-Xin Xiang, Aiping Le, Jia-Ming Liu,
+  Malik Peiris, Leo~LM Poon, and Wei Zhang.
+\newblock Viral dynamics in mild and severe cases of covid-19.
+\newblock {\em The Lancet Infectious Diseases}, 2020.
+
+\bibitem{park2020time}
+Sang~Woo Park, Daniel~M Cornforth, Jonathan Dushoff, and Joshua~S Weitz.
+\newblock The time scale of asymptomatic transmission affects estimates of
+  epidemic potential in the covid-19 outbreak.
+\newblock {\em medRxiv}, 2020.
+
+\end{thebibliography}

@@ -1,0 +1,216 @@
+\documentclass[a4paper,12pt]{article}
+%\documentclass[pre,twocolumn,byrevtex,pdftex,superscriptaddress]{revtex4}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{kbordermatrix}
+\usepackage{float}
+\usepackage{siunitx} % Required for alignment
+\usepackage{geometry}
+\usepackage{graphicx}
+%\usepackage[demo]{graphicx}
+%\usepackage{caption}
+%\usepackage{subcaption}
+\geometry{margin=0.5in}
+\usepackage{verbatim}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}[proposition]{Corollary}
+\newtheorem{lemma}[proposition]{Lemma}
+\newenvironment{proof}%
+{{\par\noindent \bf Proof. \nobreak}}%
+{\nobreak \removelastskip \nobreak \hfill $\Box$ \medbreak}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\def\citeasnoun{\cite}
+\usepackage{natbib}
+%\bibliographystyle{spbasic} 
+\bibliographystyle{plain} 
+\usepackage{bm} % package to bold 'math'
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	citecolor=red
+}
+\usepackage{xcolor}
+
+%\author{\large Guanlin and Shashwat. }
+
+\begin{document}
+\renewcommand\thesection{\Alph{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+%\maketitle
+%\tableofcontents
+% ------------------ Define some notations -------------
+\newcommand{\Jacb}{\frac{\partial f}{\partial x}} 
+\newcommand{\cst}{\mathcal{J}} 
+\newcommand{\Ra}{\mathcal{R}_{a}}
+\newcommand{\Rs}{\mathcal{R}_{s}}
+
+\newcommand{\Laaa}{\mathcal{L}_{aaa}}
+\newcommand{\Lasa}{\mathcal{L}_{asa}}
+\newcommand{\Lsss}{\mathcal{L}_{sss}}
+\newcommand{\Lsas}{\mathcal{L}_{sas}}
+
+\section{Viewing COVID-19 as two diseases}
+A recent study shows that patients with severe COVID-19 tend to have a high viral load and a long virus-shedding period \cite{liu2020viral}. We imagine that the transmission might depend on the state of the carrier (e.g., because higher viral load means transmission more likely to lead to symptomatic). We revise the baseline model in \cite{park2020time} by viewing COVID-19 as two diseases. The infected individuals can be either asymptomatic, $I_{a}$, or symptomatic $I_{s}$. Symptomatic cases may have higher viral load and therefore are more infectious. The susceptible individauls $S$  preferentially become symptomatic exposed individuals $E_{s}$ after getting infected by symptomatic infected individuals $I_{s}$.  The baseline model is as follows (without age structure)
+\begin{align}\label{eq: model}
+\begin{split}
+\dot{S} &= -\beta_{a}SI_{a} -  \beta_{s}SI_{s}\\
+\dot{E_{a}} &= (1 - \epsilon_{a})\beta_{a}SI_{a} + \epsilon_{s}\beta_{s}SI_{s}-  \gamma_{Ea}E_{a}\\
+\dot{E_{s}} &= \epsilon_{a}\beta_{a}SI_{a} + (1 - \epsilon_{s})\beta_{s}SI_{s} -  \gamma_{Es}E_{s}\\
+\dot{I_{a}} &= p\gamma_{Ea}E_{a} + (1 - q)\gamma_{Es}E_{s} - \gamma_{a}I_{a}\\
+\dot{I_{s}} &= (1 - p)\gamma_{Ea}E_{a}  + q\gamma_{Es}E_{s} - \gamma_{s}I_{s}\\
+\dot{R} &= \gamma_{a}I_{a} + (1 - f)\gamma_{s}I_{s}\\
+\dot{D} &= f\gamma_{s}I_{s}\ .
+\end{split}
+\end{align}
+
+\section{$\mathcal{R}_{0}$ calculation}
+To compute the basic reproduction number, we use next-generation matrix \cite{diekmann2010construction}. The infected subsystem of Eq.~\ref{eq: model} can be written as
+\begin{align}\label{eq: infect - submodel}
+\begin{split}
+\begin{bmatrix} 
+\dot{E_{a}}\\
+\dot{E_{s}} \\
+\dot{I_{a}} \\
+\dot{I_{s}}
+\end{bmatrix}
+ = 
+\left(  \begin{bmatrix} 
+ 0 & 0 & (1 - \epsilon_{a})\beta_{a} & \epsilon_{s}\beta_{s}\\
+ 0 & 0 & \epsilon_{a}\beta_{a} & (1 - \epsilon_{s})\beta_{s}\\
+ 0 & 0 & 0 & 0\\
+ 0 & 0 & 0 & 0
+ \end{bmatrix}
+ +
+ \begin{bmatrix} 
+ -\gamma_{Ea} & 0 & 0 & 0\\
+0 & -\gamma_{Es} & 0 & 0\\
+ p\gamma_{Ea} & (1 - q)\gamma_{Es} & -\gamma_{a}& 0\\
+ (1 - p)\gamma_{Ea} & q\gamma_{Es} & 0 & -\gamma_{s}
+ \end{bmatrix}
+ \right)
+ \begin{bmatrix} 
+ E_{a}\\
+ E_{s} \\
+ I_{a}\\
+ I_{s}
+ \end{bmatrix},
+\end{split}
+\end{align}
+where the first matrix in the bracket is called transmission matrix $T$ and the second matrix is refered as transition matrix $\Sigma$. Then, we define a matrix $Q$  whose columns consist of unit vectors relating
+to non-zero rows of $T$ only, \emph{i.e.,} $Q = [e_{1}, e_{2}]$ where $e_{i}$ is the $i^{th}$ unit vector in $\mathbb{R}^{4}$. The next-generation matrix, $\Phi = -Q^{T}T\Sigma^{-1}Q$, is
+\begin{align}\label{eq: ngm}
+\begin{split}
+\Phi = \begin{bmatrix} 
+\frac{\beta_{s}\epsilon_{s}(1 - p)}{\gamma_{s}} + \frac{\beta_{a}(1 - \epsilon_{a})p}{\gamma_{a}} &
+\frac{\beta_{s}\epsilon_{s}q}{\gamma_{s}} + \frac{\beta_{a}(1 - \epsilon_{a})(1 - q)}{\gamma_{a}} \\
+\frac{\beta_{s}(1 - \epsilon_{s})(1 - p)}{\gamma_{s}} + \frac{\beta_{a}\epsilon_{a}p}{\gamma_{a}} &
+\frac{\beta_{s}(1 - \epsilon_{s})q}{\gamma_{s}} + \frac{\beta_{a}\epsilon_{a}(1 - q)}{\gamma_{a}} 
+\end{bmatrix}.
+\end{split}
+\end{align}
+We define $\mathcal{R}_{a} = \beta_{a}/\gamma_{a}$ and $\mathcal{R}_{s} = \beta_{s}/\gamma_{s}$,  the Eq.~\ref{eq: ngm} read as
+\begin{align}\label{eq: ngm - 1}
+\begin{split}
+\Phi = \begin{bmatrix} 
+\overbrace{\Rs\epsilon_{s}(1 - p)}^{E_{a} \rightarrow I_{s} \rightarrow E_{a}} + \overbrace{\Ra(1 - \epsilon_{a})p}^{E_{a} \rightarrow I_{a} \rightarrow E_{a}}&
+\overbrace{\Rs\epsilon_{s}q}^{E_{s} \rightarrow I_{s} \rightarrow E_{a}} + \overbrace{\Ra(1 - \epsilon_{a})(1 - q)}^{E_{s} \rightarrow I_{a} \rightarrow E_{a}}\\
+\overbrace{\Rs(1 - \epsilon_{s})(1 - p)}^{E_{a} \rightarrow I_{s} \rightarrow E_{s}} + \overbrace{\Ra\epsilon_{a}p}^{E_{a} \rightarrow I_{a} \rightarrow E_{s}}&
+\overbrace{\Rs (1 -\epsilon_{s})q}^{E_{s} \rightarrow I_{s} \rightarrow E_{s}} +\overbrace{\Ra\epsilon_{a}(1 - q)}^{E_{s} \rightarrow I_{a} \rightarrow E_{s}}
+\end{bmatrix}.
+\end{split}
+\end{align}
+First, we calculate $\mathcal{R}_{0}$ for a special case, $\epsilon_{a} = \epsilon_{s} = 0$, then the NGM is 
+\begin{align}\label{eq: ngm - special}
+\begin{split}
+\Phi_{0} = \begin{bmatrix} 
+\overbrace{\Ra p}^{E_{a} \rightarrow I_{a} \rightarrow E_{a}}&
+\overbrace{\Ra (1 - q)}^{E_{s} \rightarrow I_{a} \rightarrow E_{a}}\\
+\overbrace{\Rs(1 - p)}^{E_{a} \rightarrow I_{s} \rightarrow E_{s}} &
+\overbrace{\Rs q}^{E_{s} \rightarrow I_{s} \rightarrow E_{s}} 
+\end{bmatrix}.
+\end{split}
+\end{align}
+Remember that for a $2\times2$ matrix the dominant eigenvalue, and hence $\mathcal{R}_{0}$, can be obtained from the trace and the determinant of the matrix as
+\begin{align}\label{eq: R0 - special}
+\begin{split}
+\mathcal{R}_{0} &= \frac{1}{2}\left(\text{trace}(\Phi_{0}) + \sqrt{\text{trace}(\Phi_{0})^{2} - 4 \text{Det}(\Phi_{0})}\right)\\
+&= \frac{1}{2}\left(\Ra p + \Rs q + \sqrt{(\Ra p + \Rs q)^{2} - 4\Ra\Rs (p + q - 1)}\right)
+\end{split}
+\end{align}
+Second, we calculate $\mathcal{R}_{0}$ for another special case, $p = q = 1$, the NGM is
+\begin{align}\label{eq: ngm - special-2}
+\begin{split}
+\Phi_{1} = \begin{bmatrix} 
+\overbrace{\Ra(1 - \epsilon_{a})}^{E_{a} \rightarrow I_{a} \rightarrow E_{a}}&
+\overbrace{\Rs\epsilon_{s}}^{E_{s} \rightarrow I_{s} \rightarrow E_{a}} \\
+ \overbrace{\Ra\epsilon_{a}}^{E_{a} \rightarrow I_{a} \rightarrow E_{s}}&
+\overbrace{\Rs (1 -\epsilon_{s})}^{E_{s} \rightarrow I_{s} \rightarrow E_{s}}
+\end{bmatrix}.
+\end{split}
+\end{align}
+In this case, we find 
+\begin{align}\label{eq: R0 - special-2}
+\begin{split}
+\mathcal{R}_{0} &= \frac{1}{2}\left(\text{trace}(\Phi_{1}) + \sqrt{\text{trace}(\Phi_{1})^{2} - 4 \text{Det}(\Phi_{1})}\right)\\
+&= \frac{1}{2}\left(\Ra (1 - \epsilon_{a}) + \Rs (1 - \epsilon_{s})  + \sqrt{(\Ra (1 - \epsilon_{a})  + \Rs (1 - \epsilon_{s}) )^{2} - 4\Ra\Rs (1 - \epsilon_{a} - \epsilon_{s}) }\right)
+\end{split}
+\end{align}
+
+\section{Age-dependent model structure}
+The dynamics of infected compartments in an age-structured Covid-SIR model can be written as 
+\begin{align}\label{eq: age-model}
+	\begin{split}
+		\dot{I}_{a,i} &= \overbrace{\beta_{a}\sigma_{a, i}S_{i}\left(\sum_{j = 1}^{N} C_{i,j}I_{a,j}\right)}^{a \rightarrow a\ \text{ transmission}}+  \overbrace{\beta_{s}\sigma_{a, i}S_{i}\left(\sum_{j = 1}^{N} C_{i,j}I_{s,j}\right) }^{s \rightarrow a\ \text{transmission}} - \delta_{a}I_{s,i}\\
+		\dot{I}_{s,i} &=\overbrace{\beta_{a}\sigma_{s, i}S_{i}\left(\sum_{j = 1}^{N} C_{i,j}I_{a,j}\right)}^{a \rightarrow s\ \text{ transmission}}+  \overbrace{\beta_{s}\sigma_{s, i}S_{i}\left(\sum_{j = 1}^{N} C_{i,j}I_{s,j}\right) }^{s \rightarrow s\ \text{transmission}} - \delta_{s}I_{s,j},
+	\end{split}
+\end{align}
+where $C_{i,j}$ is the contact matrix ($N$ by $N$). Note that $\sigma_{s,i} = \alpha_{i}p_{i}$, where  $\alpha_{i}$ is the susceptibility of people in age $i$ to infection and $p_{i}$ is the probability of symptomatic infection for age $i$. Similarly, we have $\sigma_{a, i} = \alpha_{i}(1 - p_{i})$. Though we cannot distinguish (or identify) the parameters $p_{i}$ and $\alpha_{i}$ from model, we do expect that $\sigma_{s, i}/\sigma_{a, i} = p_{i}/(1 - p_{i})$. 
+
+To derive the next-generation matrix, we define the vector of infected compartments, 
+\begin{displaymath}
+	I = \left[ - I_{a,i} - |  - I_{s,i} - \right]^{T},
+\end{displaymath}
+where $i = 1,...,N$ and so that $I \in \mathbb{R}^{2N}$.  We decouple the linearized infected subsystem as $\dot{I} = (T + \Sigma)I$, where $T$ is the transmission matrix and $\Sigma$ is the transition matrix. Note that the transmission matrix $T$ can be viewed as a matrix with four blocks, each block suggests one way of transmission: $x \rightarrow y$, where $x, y \in \{a, s\}$. Specifically, we define four $N$ by $N$ matrices:
+\begin{align}\label{eq: 4 blocks in age-dependent NGM}
+\begin{split}
+[T_{a \rightarrow a}]_{i,j} &= \beta_{a}\sigma_{a, i}S_{i}^{0}C_{i,j},\\
+[T_{s \rightarrow a}]_{i,j} &= \beta_{s}\sigma_{a, i}S_{i}^{0}C_{i,j},\\
+[T_{a \rightarrow s}]_{i,j} &= \beta_{a}\sigma_{s, i}S_{i}^{0}C_{i,j},\\
+[T_{s \rightarrow s}]_{i,j} &= \beta_{s}\sigma_{s, i}S_{i}^{0}C_{i,j},
+\end{split}
+\end{align}
+where $S_{i}^{0}$ is the initial fraction of age $i$ group. Therefore, the transmission matrix $T$ can be written as
+\begin{align}\label{eq: T-age-dependent}
+\begin{split}
+T= \begin{bmatrix} T_{a \rightarrow a}&
+T_{s \rightarrow a}\\
+T_{a \rightarrow s}&
+T_{s \rightarrow s}
+\end{bmatrix}.
+\end{split}
+\end{align}
+The transition matrix $\Sigma$ is a diagonal matrix: $\Sigma = - \text{diag}[ - \delta_{a} - | - \delta_{s} -]$, \emph{i.e.,} the diagonal elements on the first $N$ rows are $-\delta_{a}$ and the diagonal elements of rest rows are $-\delta_{s}$.  The NGM $\Phi$ can be computed as $-T\Sigma^{-1}$ and we obtain
+\begin{align}\label{eq: Phi-age-dependent}
+\begin{split}
+\Phi= \begin{bmatrix} \frac{T_{a \rightarrow a}}{\delta_{a}}&
+\frac{T_{s \rightarrow a}}{\delta_{s}}\\
+\frac{T_{a \rightarrow s}}{\delta_{a}}&
+\frac{T_{s \rightarrow s}}{\delta_{s}}
+\end{bmatrix},
+\end{split}
+\end{align}
+where $(.)/\delta_{a}$ and $(.)/\delta_{s}$ are performed elementwise on matrix.  
+ 
+
+
+\clearpage
+\bibliography{covid_two_diseases_R0_ref}
+\end{document}

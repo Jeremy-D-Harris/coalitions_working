@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+\usepackage[top=1in,left=1in, right = 1in, footskip=1in]{geometry}
+
+\usepackage{graphicx}
+\usepackage{xspace}
+%\usepackage{adjustbox}
+
+\newcommand{\comment}{\showcomment}
+%% \newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+\newcommand{\bmb}[1]{\comment{blue}{BMB}{#1}}
+\newcommand{\djde}[1]{\comment{red}{DJDE}{#1}}
+
+\newcommand{\eref}[1]{(\ref{eq:#1})}
+\newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\sref}[1]{Sec.~\ref{#1}}
+\newcommand{\frange}[2]{Fig.~\ref{fig:#1}--\ref{fig:#2}}
+\newcommand{\tref}[1]{Table~\ref{tab:#1}}
+\newcommand{\tlab}[1]{\label{tab:#1}}
+\newcommand{\seminar}{SE\mbox{$^m$}I\mbox{$^n$}R}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc} % make sure fancy dashes etc. don't get dropped
+
+\usepackage{lineno}
+\linenumbers
+
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+
+\usepackage{natbib}
+\bibliographystyle{chicago}
+\date{\today}
+
+\usepackage{xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+\usepackage{color}
+
+\newcommand{\Rx}[1]{\ensuremath{{\mathcal R}_{#1}}\xspace} 
+\newcommand{\Ro}{\Rx{0}}
+\newcommand{\Rc}{\Rx{\mathrm{c}}}
+\newcommand{\Rs}{\Rx{\mathrm{s}}}
+\newcommand{\RR}{\ensuremath{{\mathcal R}}\xspace}
+\newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
+\newcommand{\Rintrinsic}{\ensuremath{{\mathcal R}_{\textrm{\tiny intrinsic}}}\xspace}
+\newcommand{\Rapprox}{\ensuremath{{\mathcal R}_{\textrm{\tiny approx}}}\xspace}
+\newcommand{\Rnaive}{\ensuremath{{\mathcal R}_{\textrm{\tiny naive}}}\xspace}
+\newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
+\newcommand{\dd}[1]{\ensuremath{\, \mathrm{d}#1}}
+\newcommand{\dtau}{\dd{\tau}}
+\newcommand{\dx}{\dd{x}}
+\newcommand{\dsigma}{\dd{\sigma}}
+
+\newcommand{\psymp}{\ensuremath{p}} %% primary symptom time
+\newcommand{\ssymp}{\ensuremath{s}} %% secondary symptom time
+\newcommand{\pinf}{\ensuremath{\alpha_1}} %% primary infection time
+\newcommand{\sinf}{\ensuremath{\alpha_2}} %% secondary infection time
+
+\newcommand{\psize}{{\mathcal P}} %% primary cohort size
+\newcommand{\ssize}{{\mathcal S}} %% secondary cohort size
+
+\newcommand{\gtime}{\tau_{\rm g}} %% generation interval
+\newcommand{\gdist}{g} %% generation-interval distribution
+\newcommand{\idist}{\ell} %% incubation period distribution
+
+\newcommand{\total}{{\mathcal T}} %% total number of serial intervals
+
+\usepackage{lettrine}
+
+\newcommand{\dropcapfont}{\fontfamily{lmss}\bfseries\fontsize{26pt}{28pt}\selectfont}
+\newcommand{\dropcap}[1]{\lettrine[lines=2,lraise=0.05,findent=0.1em, nindent=0em]{{\dropcapfont{#1}}}{}}
+
+\begin{document}
+
+\begin{flushleft}{
+	\Large
+	\textbf\newline{
+		Next generation matrix calculation
+	}
+}
+\newline
+\end{flushleft}
+
+\section{Model}
+
+Let $S_i$ represent the proportion of susceptible individuals in age group $i$ and $I_i$ represent the proportion of infected individuals in age group $i = 1, \dots, n$. Then, the model is given by:
+\begin{align}
+\frac{dI_{s,i}}{dt} &= \beta_a \sigma_{s, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{a, j} \right) + \beta_s \sigma_{s, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{s, j} \right) - \delta_s I_{s, i}\\
+\frac{dI_{a,i}}{dt} &= \beta_a \sigma_{a, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{a, j} \right) + \beta_s \sigma_{a, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{s, j} \right) - \delta_a I_{s, i}
+\end{align}
+
+\section{NGM}
+
+In this case, we have (using rough notations):
+\begin{equation}
+\mathcal F = \begin{pmatrix}
+\beta_a \sigma_{s, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{a, j} \right) + \beta_s \sigma_{s, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{s, j} \right)\\
+\beta_a \sigma_{a, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{a, j} \right) + \beta_s \sigma_{a, i} S_i \left(\sum_{j=1}^N C_{i, j} I_{s, j} \right) 
+\end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+\mathcal V = \begin{pmatrix}
+\gamma_s\\
+\gamma_a
+\end{pmatrix}
+\end{equation}
+
+Then, we can write $F$ and $V$ using a block matrix:
+\begin{equation}
+F = \begin{pmatrix}
+F_{s,s,i,j} & F_{s,a,i,j}\\
+F_{a,s,i,j} & F_{a,a,i,j}\\
+\end{pmatrix}
+\end{equation}
+where $F_{x,y,i,j}$ represents transmission from infection type $y$ to $x$ from age group $j$ to $i$.
+Then, we have
+\begin{equation}
+F_{x,y,i,j} = \beta_y \sigma_{x,i} C_{i,j}.
+\end{equation}
+Likewise,
+\begin{equation}
+V = \begin{pmatrix}
+V_{s,s,i,j} & V_{s,a,i,j}\\
+V_{a,s,i,j} & V_{a,a,i,j}\\
+\end{pmatrix}
+\end{equation}
+In this case, $V_{s,a,i,j}$ and $V_{a,s,i,j}$ are zero matrices and $V_{s,s,i,j}$ and $V_{a,a,i,j}$ are diagonal matrices whose entries are $\delta_s$ and $\delta_a$, respectively.
+Then, we have 
+\begin{equation}
+V^{-1} = \begin{pmatrix}
+1/\delta_s & 0\\
+0 & 1/\delta_a\\
+\end{pmatrix}
+\end{equation}
+a $2n \times 2n$ diagonal matrix.
+
+Then, the next generation matrix is given by:
+\begin{equation}
+FV^{-1} = \begin{pmatrix}
+\mathcal R_s \sigma_{s,i} C_{i,j} & \mathcal R_a \sigma_{s,i} C_{i,j}\\
+\mathcal R_s \sigma_{a,i} C_{i,j} & \mathcal R_a \sigma_{a,i} C_{i,j}\\
+\end{pmatrix}
+\end{equation}
+
+If we want to calculate the exp growth rate, we take the largest eigenvalue of the matrix $F-V$. %>% 
+
+\end{document}

@@ -226,22 +226,23 @@ semilogx(gam_vals_range,r_corresponding_lysogenicR0equalsone,'k--','linewidth',4
 % set(gca,'YDir','normal');
 % cb1 = colorbar;
 % % cb1.Label.String = 'CFU/mL';
-% xlim([1e-6 1e-3]);
+xlim([1e-6 1e-2]);
+yticks([0.99 1 1.01 1.02]);
 % ylim([r_pt-updown_amt r_pt+updown_amt]);
 ylim([r_pt-0.01 r_pt+.02]);
 % % axis([x_values(1) x_values(end) 0 2*10^5]);
 % xlabel('(Resident) Lysogen Induction Rate, $\gamma_A$ (hr$^{-1}$)','interpreter','latex');
 % ylabel('(Invading) Lysogen Growth Rate, $r_B$ (hr$^{-1}$)','interpreter','latex');
 % title('Lysogenic Reproduction Number');
-% f2=gca;
-% % f2.CLim = [1 max(max(lysogen_reproduction_number_lysogenic))];
-% % f2.CLim = [1 1.002];
+f2=gca;
+% f2.CLim = [1 max(max(lysogen_reproduction_number_lysogenic))];
 % f2.XScale = 'log';
-% % f1.YScale = 'log';
-f2.LineWidth = 2;
+% f1.YScale = 'log';
+f2.LineWidth = 1.5;
 f2.FontSize = 28;
-% f2.FontWeight = 'normal';
-% f2.FontName = 'Times New Roman';
+f2.FontWeight = 'bold';
+f2.FontName = 'Times New Roman';
+% f2.ColorScale = 'linear';
 % f2.ColorScale = 'linear';
 
 
@@ -259,15 +260,15 @@ f2.FontSize = 28;
 % xlabel('Time (hr)');
 % ylabel('Population Density');
 % title('Basic Reproduction Number - lysogenic path, $\mathcal R_0$','interpreter','latex');
-f2=gca;
-% f2.CLim = [1 max(max(lysogen_reproduction_number_lysogenic))];
-% f2.XScale = 'log';
-% f1.YScale = 'log';
-f2.LineWidth = 1;
-f2.FontSize = 24;
-f2.FontWeight = 'normal';
-f2.FontName = 'Times New Roman';
-f2.ColorScale = 'linear';
+% f2=gca;
+% % f2.CLim = [1 max(max(lysogen_reproduction_number_lysogenic))];
+% % f2.XScale = 'log';
+% % f1.YScale = 'log';
+% f2.LineWidth = 1;
+% f2.FontSize = 24;
+% f2.FontWeight = 'normal';
+% f2.FontName = 'Times New Roman';
+% f2.ColorScale = 'linear';
 
 
 
